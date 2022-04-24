@@ -1,0 +1,3 @@
+displayName = Witcher Mod
+author = Lucas
+version = 0.1

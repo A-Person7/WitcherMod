@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "RaPWVRRVNeDnSkIMkwnwhXZbHIZ+C5zBCYGrZg7G96AF5xCp9NkRxpUKXa3pl99foj2lEBcZpV8uiM6Rb0JOUw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Lucas' Desktop\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\WitcherMod\\WitcherMod.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Lucas' Desktop\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
+  ],
+  "logs": []
+}
