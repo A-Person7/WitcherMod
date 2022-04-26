@@ -1,44 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace WitcherMod.WitcherClasses.Weapons.Signs.Igni {
-    public class Igni : Sign {
-        private int _lastAltAnimationFrame;
-
-        public override void SetStaticDefaults() {
-            Tooltip.SetDefault("Try this on the guide");
-        }
-
-        public override void SetDefaults() {
-            base.SetDefaults();
-
-            item.damage = 50;
-            // TODO - test the useTime
-            item.useTime = 2;
-            item.useAnimation = 20;
-            item.knockBack = 2;
-            item.value = 10000;
-            item.rare = ItemRarityID.Red;
-            item.UseSound = SoundID.Item34;
-            item.shoot = ModContent.ProjectileType<IgniParticle>();
-            item.shootSpeed = 9f;
-            item.autoReuse = false;
-            
-            item.noUseGraphic = true;
-        }
-
-        public override bool AltFunctionUse(Terraria.Player player) => true;
+    public class Igni : WSign {
         
-        public override bool CanUseItem(Terraria.Player player) {
-            // TODO - implement checking for stamina here
+
+        // item.useAnimation = 20;
+            
+        public Igni() {
+            ShootProjectile = typeof(IgniParticle);
+            Damage = 50;
+            Knockback = 2;
+            ShootSpeed = 9f;
+        }
+        
+        public override bool CanUseSign(Terraria.Player player) {
+            // TODO - implement checking for stamina here (or in the base class and call it from here)
             return !player.wet;
         }
         
-        public override bool Shoot(Terraria.Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-            AdjustAnimation();
-            
+        public override void Shoot(Terraria.Player player, Vector2 position, float speedX, float speedY, int damage, float knockBack) {
             int numberProjectiles = 10 + Main.rand.Next(6); // 4 or 5 shots
             for (int i = 0; i < numberProjectiles; i++) {
                 int degreeSpread = AltUse ? 9 : 30;
@@ -46,11 +28,8 @@ namespace WitcherMod.WitcherClasses.Weapons.Signs.Igni {
                 Vector2 perturbedSpeed =
                     new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(degreeSpread));
 
-                Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockBack, player.whoAmI);
-           }
-            
-            
-            return false; // return false because we don't want tmodloader to shoot projectile
+                Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, Type, damage, knockBack, player.whoAmI);
+            }
         }
         
         // // todo - determine if needed
@@ -59,24 +38,22 @@ namespace WitcherMod.WitcherClasses.Weapons.Signs.Igni {
         //     return new Vector2(-2, 0); // If your own flamethrower is being held wrong, edit these values. You can test out holdout offsets using Modder's Toolkit.
         // }
 
-        private void AdjustAnimation() {
+        public override void AdjustAnimation(Terraria.Player player) {
             if (!AltUse) {
                 return;
             }
 
             // TODO - reminder: this checks for right clicking, any future changes of the key to q will need to change this
             // if the alt fire button is held and the item animation is decreasing
-            if (Main.mouseRight && Main.LocalPlayer.itemAnimation < _lastAltAnimationFrame) {
-                Main.LocalPlayer.itemAnimation = Main.LocalPlayer.itemAnimationMax;
+            if (Main.mouseRight && Main.LocalPlayer.itemAnimation < LastAltAnimationFrame) {
+                player.itemAnimation = player.itemAnimationMax;
             }
-            else if (Main.LocalPlayer.itemAnimation > 0) {
+            else if (player.itemAnimation > 0) {
                 // speed the animation up (when the hand is going back down)
-                Main.LocalPlayer.itemAnimation--;
+                player.itemAnimation--;
             }
 
-            _lastAltAnimationFrame = Main.LocalPlayer.itemAnimation;
+            LastAltAnimationFrame = player.itemAnimation;
         }
-
-        private bool AltUse => Main.LocalPlayer.altFunctionUse == 2;
     }
 }

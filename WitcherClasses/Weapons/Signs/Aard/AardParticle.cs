@@ -78,7 +78,7 @@ namespace WitcherMod.WitcherClasses.Weapons.Signs.Aard
                 float falloff = 2.5f;
                 // float falloff = 0f;
 
-                Vector2 dustPos = Sign.GetRandRotation(
+                Vector2 dustPos = WSign.GetRandRotation(
                     MathHelper.ToRadians(10),
                     _originalPosition.Value, projectile.position
                 );

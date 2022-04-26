@@ -99,7 +99,7 @@ namespace WitcherMod.WitcherClasses.Weapons.Signs.Igni
 
                     Dust dust;
 
-                    Vector2 dustPos = Sign.GetRandRotation(
+                    Vector2 dustPos = WSign.GetRandRotation(
                         MathHelper.ToRadians(AltFired ? 0 : 20),
                         _originalPosition.Value, projectile.position
                     );
